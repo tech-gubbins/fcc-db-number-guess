@@ -56,7 +56,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.players (
     uid integer NOT NULL,
-    username character varying(20) NOT NULL,
+    username character varying(22) NOT NULL,
     games_played integer,
     best_game integer
 );
@@ -97,13 +97,30 @@ ALTER TABLE ONLY public.players ALTER COLUMN uid SET DEFAULT nextval('public.pla
 -- Data for Name: players; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.players VALUES (4, 'joshua', 4, 7);
+INSERT INTO public.players VALUES (6, 'user_1726777448949', 2, 0);
+INSERT INTO public.players VALUES (5, 'user_1726777448950', 5, 0);
+INSERT INTO public.players VALUES (8, 'user_1726777505581', 2, 0);
+INSERT INTO public.players VALUES (7, 'user_1726777505582', 5, 0);
+INSERT INTO public.players VALUES (10, 'user_1726777580346', 2, 0);
+INSERT INTO public.players VALUES (9, 'user_1726777580347', 5, 0);
+INSERT INTO public.players VALUES (12, 'user_1726777660995', 2, 0);
+INSERT INTO public.players VALUES (11, 'user_1726777660996', 5, 0);
+INSERT INTO public.players VALUES (14, 'user_1726777662713', 2, 0);
+INSERT INTO public.players VALUES (13, 'user_1726777662714', 5, 0);
+INSERT INTO public.players VALUES (16, 'user_1726777664372', 2, 0);
+INSERT INTO public.players VALUES (15, 'user_1726777664373', 5, 0);
+INSERT INTO public.players VALUES (18, 'user_1726777678652', 2, 0);
+INSERT INTO public.players VALUES (17, 'user_1726777678653', 5, 0);
+INSERT INTO public.players VALUES (20, 'user_1726777685815', 2, 0);
+INSERT INTO public.players VALUES (19, 'user_1726777685816', 5, 0);
 
 
 --
 -- Name: players_uid_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.players_uid_seq', 1, false);
+SELECT pg_catalog.setval('public.players_uid_seq', 20, true);
 
 
 --
