@@ -14,8 +14,7 @@ read USERNAME
 USERNAME_RESULT=$($PSQL "SELECT username FROM players WHERE username = '$USERNAME'")
 
 # If username doesn't exist...
-if [[ -z $USERNAME_RESULT ]]
-then
+if [[ -z $USERNAME_RESULT ]]; then
   # Create username in database
   RESULT=$($PSQL "INSERT INTO players(username, games_played, best_game) VALUES('$USERNAME', 0, 0)")
 
@@ -24,17 +23,52 @@ then
 else
   # Query database for user's stats
   USER_STATS=$($PSQL "SELECT games_played, best_game FROM players WHERE username = '$USERNAME'")
-  IFS="|" read GAMES_PLAYED BEST_GAME <<< "$USER_STATS"
+  IFS="|" read GAMES_PLAYED BEST_GAME <<<"$USER_STATS"
 
   # Print welcome message
   echo -e "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
 
+# Start the game by setting a game over flag
+GAME_OVER=false
+
 # Generate random number between 1 and 1000
+RANDOM_NUMBER=$(((RANDOM % 1000) + 1))
+
+# Set the number of guesses
+NUMBER_OF_GUESSES=0
+
+# Ask user to input their guess
+echo -e "Guess the secret number between 1 and 1000: "
 
 # ----- Do while game isn't finished -----
-# Ask user to input their guess
+while [[ $GAME_OVER == false ]]; do
+  # Read the user's guess
+  read USER_GUESS
 
-# If wrong, give hint
+  # Increment the number of times the user has guessed
+  ((NUMBER_OF_GUESSES++))
 
-# Else, tell user number of tries, and the secret number
+  # If not a valid input...
+  if ! [[ $USER_GUESS =~ ^[0-9]+$ ]]; then
+    # Tell the user to type in an integer
+    echo "That is not an integer, guess again:"
+
+    # Keep playing
+    continue
+  fi
+
+  # If the guess is...
+  # Wrong and too low:
+  if (($USER_GUESS < $RANDOM_NUMBER)); then
+    echo "It's higher than that, guess again:"
+  # Wrong and too high:
+  elif (($USER_GUESS > $RANDOM_NUMBER)); then
+    echo "It's lower than that, guess again:"
+  # Correct:
+  else
+    echo -e "You guessed it in $NUMBER_OF_GUESSES tries. The secret number was $RANDOM_NUMBER. Nice job!"
+    # Set the game over flag
+    GAME_OVER=true
+  fi
+done
