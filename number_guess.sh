@@ -73,15 +73,15 @@ while [[ $GAME_OVER == false ]]; do
     GAME_OVER=true
 
     # Increment the number of games played
-    (($GAMES_PLAYED++))
+    ((GAMES_PLAYED++))
   fi
 done
 
 # Determine if this was the best game yet
-if (($BEST_GAME < $NUMBER_OF_GUESSES)); then
+if (($BEST_GAME > $NUMBER_OF_GUESSES)); then
   # Update database with new best score
-  RESULT=$($PSQL "UPDATE players SET best_game = $NUMBER_OF_GUESSES WHERE username = $USERNAME")
+  RESULT=$($PSQL "UPDATE players SET best_game = $NUMBER_OF_GUESSES WHERE username = '$USERNAME'")
 fi
 
 # Increment the number of games played in the database
-RESULT=$($PSQL "UPDATE players SET games_played = $GAMES_PLAYED WHERE username = $USERNAME")
+RESULT=$($PSQL "UPDATE players SET games_played = $GAMES_PLAYED WHERE username = '$USERNAME'")
