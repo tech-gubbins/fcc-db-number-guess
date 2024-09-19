@@ -68,7 +68,20 @@ while [[ $GAME_OVER == false ]]; do
   # Correct:
   else
     echo -e "You guessed it in $NUMBER_OF_GUESSES tries. The secret number was $RANDOM_NUMBER. Nice job!"
+
     # Set the game over flag
     GAME_OVER=true
+
+    # Increment the number of games played
+    (($GAMES_PLAYED++))
   fi
 done
+
+# Determine if this was the best game yet
+if (($BEST_GAME < $NUMBER_OF_GUESSES)); then
+  # Update database with new best score
+  RESULT=$($PSQL "UPDATE players SET best_game = $NUMBER_OF_GUESSES WHERE username = $USERNAME")
+fi
+
+# Increment the number of games played in the database
+RESULT=$($PSQL "UPDATE players SET games_played = $GAMES_PLAYED WHERE username = $USERNAME")
